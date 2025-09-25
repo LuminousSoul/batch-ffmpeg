@@ -25,9 +25,10 @@ for %%f in (*.mp4) do (
 	REM extract Thumbnail
 	ffmpeg -ss 00:00:00 -i "%%f" -frames:v 1 -q:v 2 thumbnail.png
 	
-	ffmpeg -i "%%~nf" -i thumbnail.png -map 1 -map 0 -c copy -disposition:0 attached_pic "%%~nf [T].mp4"
+	ffmpeg -i "%%~nf.mp4" -i thumbnail.png -map 1 -map 0 -c copy -disposition:0 attached_pic "%%~nf [T].mp4"
 	del thumbnail.png
 )
 
 echo Conversion complete!
 pause
+
