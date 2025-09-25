@@ -30,21 +30,21 @@ for %%f in (*.mp4) do (
 		ffmpeg -ss 00:30:00 -i "%%f" -frames:v 1 -q:v 2 "thumbnail.png"
 	)
 
+
 	:: Other Commands to add if needed
-	:: Scaling down - -vf "scale='min(1920,iw)':'min(1080,ih)'" ^
-    ffmpeg -i "%%f" -c:v libx265 -preset ultrafast -crf 28 ^
-        -c:a aac -b:a 192k ^
-        -c:s copy ^
-        "%%~nf [x265] [No Thumbnail].mp4"
+	:: Scaling down: -vf scale='min(1920,iw)':'min(1080,ih)'
+	:: Encoding Speeds: ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow, placebo
+    ffmpeg -i "%%f" -c:v libx265 -preset slow -crf 28 -c:a aac -b:a 192k -c:s copy "%%~nf [x265] [No Thumbnail].mp4"
 		
 
-		REM Add thumbnail to file
-		ffmpeg -i "%%~nf [x265] [No Thumbnail].mp4" -i thumbnail.png -map 1 -map 0 -c copy -disposition:0 attached_pic "%%~nf [x265].mp4"
-		del "%%~nf [x265] [No Thumbnail].mp4"
-		del thumbnail.png
+	REM Add thumbnail to file
+	ffmpeg -i "%%~nf [x265] [No Thumbnail].mp4" -i thumbnail.png -map 1 -map 0 -c copy -disposition:0 attached_pic "%%~nf [x265].mp4"
+	del "%%~nf [x265] [No Thumbnail].mp4"
+	del thumbnail.png
 )
 
 echo Conversion complete!
 pause
+
 
 
