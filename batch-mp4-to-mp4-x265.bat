@@ -37,7 +37,8 @@ for %%f in (*.mp4) do (
         -c:s copy ^
         "%%~nf [x265] [No Thumbnail].mp4"
 		
-		
+
+		REM Add thumbnail to file
 		ffmpeg -i "%%~nf [x265] [No Thumbnail].mp4" -i thumbnail.png -map 1 -map 0 -c copy -disposition:0 attached_pic "%%~nf [x265].mp4"
 		del "%%~nf [x265] [No Thumbnail].mp4"
 		del thumbnail.png
@@ -45,4 +46,5 @@ for %%f in (*.mp4) do (
 
 echo Conversion complete!
 pause
+
 
