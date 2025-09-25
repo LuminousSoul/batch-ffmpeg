@@ -22,9 +22,13 @@ for %%f in (*.mp4) do (
     echo Processing file !index! of !count!: "%%f"
 	
 	
-	REM extract Thumbnail
-	ffmpeg -ss 00:00:00 -i "%%f" -frames:v 1 -q:v 2 thumbnail.png
+	REM extract Thumbnail from video to thumbnail.png
+	ffmpeg -i "%%~nf.mp4" -map 0:v -map -0:V -c copy thumbnail.png
 	
+	REM if unable to or there is nothing to extract, create a thumbnail at specific spot
+	if not exist "thumbnail.png" (
+		ffmpeg -ss 00:30:00 -i "%%f" -frames:v 1 -q:v 2 "thumbnail.png"
+	)
 
 	:: Other Commands to add if needed
 	:: Scaling down - -vf "scale='min(1920,iw)':'min(1080,ih)'" ^
@@ -41,3 +45,4 @@ for %%f in (*.mp4) do (
 
 echo Conversion complete!
 pause
+
