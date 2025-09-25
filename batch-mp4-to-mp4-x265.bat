@@ -27,12 +27,12 @@ for %%f in (*.mp4) do (
 	
 	REM if unable to or there is nothing to extract, create a thumbnail at specific spot
 	if not exist "thumbnail.png" (
-		ffmpeg -ss 00:30:00 -i "%%f" -frames:v 1 -q:v 2 "thumbnail.png"
+		ffmpeg -ss 00:00:30 -i "%%f" -frames:v 1 -q:v 2 "thumbnail.png"
 	)
 
 
 	:: Other Commands to add if needed
-	:: Scaling down: -vf "scale='min(1920,iw)':'min(1080,ih)'"   - NOTE (Careful of non-standard Resolution files) (e.g 2440 1080 -> 1920 1080) (Doesn't adjust)
+	:: Scaling down: -vf "scale='min(1920,iw)':'min(1080,ih)'"
 	:: Encoding Speeds: ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow, placebo
     ffmpeg -i "%%f" -c:v libx265 -preset slow -crf 28 -c:a aac -b:a 192k -c:s copy "%%~nf [x265] [No Thumbnail].mp4"
 		
@@ -45,8 +45,6 @@ for %%f in (*.mp4) do (
 
 echo Conversion complete!
 pause
-
-
 
 
 
