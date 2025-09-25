@@ -32,7 +32,7 @@ for %%f in (*.mp4) do (
 
 
 	:: Other Commands to add if needed
-	:: Scaling down: -vf "scale='min(1920,iw)':'min(1080,ih)'"
+	:: Scaling down: -vf "scale='min(1920,iw)':'min(1080,ih)'" - NOTE (Careful of non-standard Resolution files) (e.g 2440 1080 -> 1920 1080) (Doesn't adjust)
 	:: Encoding Speeds: ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow, placebo
     ffmpeg -i "%%f" -c:v libx265 -preset slow -crf 28 -c:a aac -b:a 192k -c:s copy "%%~nf [x265] [No Thumbnail].mp4"
 		
@@ -45,6 +45,7 @@ for %%f in (*.mp4) do (
 
 echo Conversion complete!
 pause
+
 
 
 
