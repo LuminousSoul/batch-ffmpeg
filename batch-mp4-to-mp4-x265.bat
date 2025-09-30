@@ -25,10 +25,7 @@ for %%f in (*.mp4) do (
 	REM extract Thumbnail from video to thumbnail.png
 	ffmpeg -i "%%~nf.mp4" -map 0:v -map -0:V -c copy thumbnail.png
 	
-	REM if unable to or there is nothing to extract, create a thumbnail at specific spot
-	if not exist "thumbnail.png" (
-		ffmpeg -ss 00:00:30 -i "%%f" -frames:v 1 -q:v 2 "thumbnail.png"
-	)
+	
 
 
 	:: Other Commands to add if needed
@@ -37,16 +34,19 @@ for %%f in (*.mp4) do (
     ffmpeg -i "%%f" -c:v libx265 -preset slow -crf 28 -c:a aac -b:a 192k -c:s copy "%%~nf [x265] [No Thumbnail].mp4"
 		
 
+	REM if unable to or there is nothing to extract, create a thumbnail at specific spot
+	if not exist "thumbnail.png" (
+		ffmpeg -ss 00:00:30 -i "%%~nf [x265] [No Thumbnail].mp4" -frames:v 1 -q:v 2 "thumbnail.png"
+	)
+
 	REM Add thumbnail to file
 	ffmpeg -i "%%~nf [x265] [No Thumbnail].mp4" -i thumbnail.png -map 1 -map 0 -c copy -disposition:0 attached_pic "%%~nf [x265].mp4"
-	del "%%~nf [x265] [No Thumbnail].mp4"
+	::del "%%~nf [x265] [No Thumbnail].mp4"
 	del thumbnail.png
 )
 
 echo Conversion complete!
 pause
-
-
 
 
 
