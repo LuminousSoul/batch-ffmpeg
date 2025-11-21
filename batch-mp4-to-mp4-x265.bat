@@ -1,14 +1,19 @@
 @echo off
+set /p filetype=Enter the file extension to convert (e.g. mkv, mp4, avi): 
+
+echo Converting all *.%filetype% files to WebP...
+
+
 setlocal enabledelayedexpansion
 
-REM Count total MP4 files first
+REM Count total Video files first
 set count=0
-for %%f in (*.mp4) do (
+for %%f in (*.%filetype%) do (
     set /a count+=1
 )
 
 if !count! equ 0 (
-    echo No MP4 files found in this folder.
+    echo No Video Files found in this folder.
     pause
     exit /b
 )
@@ -16,14 +21,14 @@ if !count! equ 0 (
 REM Initialize file index
 set index=0
 
-REM Loop through all MP4 files
-for %%f in (*.mp4) do (
+REM Loop through all Video files
+for %%f in (*.%filetype%) do (
     set /a index+=1
     echo Processing file !index! of !count!: "%%f"
 	
 	
 	REM extract Thumbnail from video to thumbnail.png
-	ffmpeg -i "%%~nf.mp4" -map 0:v -map -0:V -c copy thumbnail.png
+	ffmpeg -i "%%~nf.%filetype%" -map 0:v -map -0:V -c copy thumbnail.png
 	
 	
 
